@@ -5,7 +5,8 @@ module.exports = {
     },
     'extends': [
         'eslint:recommended',
-        'plugin:@typescript-eslint/recommended'
+        'plugin:@typescript-eslint/recommended',
+        'prettier'
     ],
     'overrides': [
     ],
@@ -33,6 +34,18 @@ module.exports = {
         'semi': [
             'error',
             'never'
-        ]
+        ],
+        'max-len': [
+            'error',
+            {'code': 120, 'ignoreUrls': true}
+        ],
+        'space-before-function-paren': [
+            'error',
+            'always'
+        ],
+        'comma-dangle': [
+            'error',
+            'always-multiline'
+        ],
     }
 }

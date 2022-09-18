@@ -7,7 +7,7 @@ type RowItem = {
 }
 
 function sortBy (by: keyof Omit<RowItem, 'type'>) {
-    return (a: RowItem, b: RowItem) => a[by] < b[by] ? -1 : a[by] !== b[by] ? 1 : 0 
+    return (a: RowItem, b: RowItem) => (a[by] < b[by] ? -1 : a[by] !== b[by] ? 1 : 0)
 }
 
 class NodeHasNotParent extends Error {}
@@ -41,7 +41,7 @@ class Node {
         return newNode
     }
 
-    getRow(): RowItem | undefined {
+    getRow (): RowItem | undefined {
         return this.row
     }
 
@@ -53,7 +53,7 @@ class Node {
         if (!this.parent) {
             throw new NodeHasNotParent(`Element with id "${this.row?.id}" has not parent.`)
         }
-        return this.parent 
+        return this.parent
     }
 
     getAllParents (): RowItem[] {
@@ -66,11 +66,11 @@ class Node {
     }
 
     getAll (): RowItem[] {
-        return [...this.children.flatMap(child => child.getAll()), ...(this.row ? [this.row] : [])].sort(sortBy('id'))
+        return [...this.children.flatMap((child) => child.getAll()), ...(this.row ? [this.row] : [])].sort(sortBy('id'))
     }
 
     getInnerAll (): RowItem[] {
-        return this.children.flatMap(child => child.getAll()).sort(sortBy('id'))
+        return this.children.flatMap((child) => child.getAll()).sort(sortBy('id'))
     }
 }
 
@@ -93,15 +93,15 @@ export default class TreeStore {
         }
     }
 
-    getRootChildren() {
+    getRootChildren () {
         return this.root.children
     }
 
-    getAll(): RowItem[] {
+    getAll (): RowItem[] {
         return this.root.getAll()
     }
 
-    getItem(id: ID): RowItem | undefined {
+    getItem (id: ID): RowItem | undefined {
         try {
             return this.stateById[id].getRow()
         } catch (e) {
@@ -110,26 +110,25 @@ export default class TreeStore {
         }
     }
 
-    getChildren(id: ID): (RowItem | undefined)[] {
+    getChildren (id: ID): (RowItem | undefined)[] {
         try {
-            return this.stateById[id].getChildren().map(child => child.getRow())
+            return this.stateById[id].getChildren().map((child) => child.getRow())
         } catch (e) {
             if (e instanceof TypeError) throw new NodeNotFound(`Element with id "${id}" not found.`)
             throw e
         }
     }
 
-    getAllChildren(id: ID): RowItem[] {
+    getAllChildren (id: ID): RowItem[] {
         try {
             return this.stateById[id].getInnerAll()
         } catch (e) {
-            if (e instanceof NodeHasNotParent) return []
             if (e instanceof TypeError) throw new NodeNotFound(`Element with id "${id}" not found.`)
             throw e
         }
     }
 
-    getAllParents(id: ID): RowItem[] {
+    getAllParents (id: ID): RowItem[] {
         try {
             return this.stateById[id].getParent().getAllParents()
         } catch (e) {
