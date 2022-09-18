@@ -2,4 +2,6 @@
 
 ### Использование
 
-`npm run test` ИЛИ `npm run build`
+`npm run test` или `npm run build`
+
+Прошу отправить замечания в issues, либо в личные сообщения.
